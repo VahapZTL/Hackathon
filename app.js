@@ -6,6 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config/config');
+var fs = require('fs');
+
+fs.readdirSync('./models/').forEach(function(file) {
+    if (~file.indexOf('.js')) {
+        require('./models/' + file);
+    }
+});
 
 mongoose.connect(config.DBUri);
 
@@ -20,6 +27,8 @@ db.on('open', function callback() {
 });
 
 var index = require('./routes/index');
+var login = require('./routes/login');
+var register = require('./routes/register');
 var users = require('./routes/users');
 
 var app = express();
@@ -37,6 +46,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/login', login);
+app.use('/register', register);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

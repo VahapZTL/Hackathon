@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
-var Planli = require('./Planli');
-var Plansiz = require('./Plansiz');
 
 var UserSchema = new Schema({
     email: {
@@ -18,10 +16,21 @@ var UserSchema = new Schema({
         required: true
     },
     token: String,
-    createdDate: Date.now(),
+    createdDate: {
+        type: Date,
+        default: Date.now
+    },
     rota: {
-        planli: Planli,
-        plansiz: Plansiz
+        planli: {
+            baslangic: Array,
+            bitis: String,
+            tarih: Date
+        },
+        plansiz: {
+            lat: Number,
+            lng: Number,
+            yaricap: Number
+        }
     }
 });
 
